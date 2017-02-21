@@ -1,5 +1,5 @@
 # WeatherData_extraction
-Extracts a month data of weather from a website and plots it on a graph
+About the file: final_code.py : Extracts a month data of weather from a website and plots it on a graph
 
 Python v3
 
@@ -11,4 +11,4 @@ Matplotlib
 BeautifulSoup
 
 About the file : past_asr_weather.py
-It is a script with which we can extract data of as many past years as we want (until and unless it is available at "https://www.timeanddate.com/weather/india/amritsar/". The sample output of this script are shown in 3 png files named 'High_Temp.png', 'Low_Temp.png', 'Average_Temp.png'
+It is a script with which we can extract data of as many past years as we want (until and unless it is available at "https://www.timeanddate.com/weather/india/amritsar/")(by changing the variables m and y in the script).The sample output of this script are shown in 3 png files named 'High_Temp.png', 'Low_Temp.png', 'Average_Temp.png'
