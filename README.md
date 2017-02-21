@@ -9,3 +9,6 @@ Various Python Libraries Used :
 Requests
 Matplotlib
 BeautifulSoup
+
+About the file : past_asr_weather.py
+It is a script with which we can extract data of as many past years as we want (until and unless it is available at "https://www.timeanddate.com/weather/india/amritsar/". The sample output of this script are shown in 3 png files named 'High_Temp.png', 'Low_Temp.png', 'Average_Temp.png'
