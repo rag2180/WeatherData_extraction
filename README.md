@@ -14,4 +14,4 @@ About the file : past_asr_weather.py
 It is a script with which we can extract data of as many past years as we want (until and unless it is available at "https://www.timeanddate.com/weather/india/amritsar/")(by changing the variables m and y in the script).The sample output of this script are shown in 3 png files named 'High_Temp.png', 'Low_Temp.png', 'Average_Temp.png'
 
 About the file : weather_underground_api
-/www.wunderground.com's API is used to get weather data in json format. The data is parsed, filtered and plotted on graph such that graph shows 10 days forecast consiting of HIGH and LOW temperature.
+/www.wunderground.com's API is used to get weather data in json format. The data is parsed, filtered and plotted on graph such that graph shows 10 days forecast consiting of HIGH and LOW temperature. 'forecast_10_days.png' is the sample output of this script.
