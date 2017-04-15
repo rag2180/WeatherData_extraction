@@ -4,18 +4,20 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import pylab
 import re
+import sys
 
 date = []
 years = []
 months = []
-def temperature(month,year):
-	print(month,year)
+high_temps = []
+low_temps = []
+avg_temps = []
+
+def past_year_stats(city,month,year):
 	date.append(str(month)+'-'+str(year))
 	years.append(str(year))
 	months.append(str(month))
-	hi_lo_avg=[]
-	page = requests.get("https://www.timeanddate.com/weather/india/amritsar/historic?month={0}&year={1}".format(month,year))
-	#page = requests.get("https://www.timeanddate.com/weather/india/amritsar/historic?month=1&year=2011")
+	page = requests.get("https://www.timeanddate.com/weather/india/{0}/historic?month={1}&year={2}".format(city,month,year))
 	soup = BeautifulSoup(page.content,'html.parser')
 	all = soup.find('div',class_='eight columns')
 	tr1 = all.find_all('td')
@@ -24,7 +26,6 @@ def temperature(month,year):
 	high=temps[0]
 	low=temps[1]
 	avg=temps[2]
-	print(high,low,avg)
 	if "°F" in high:
 		high_F=int(high.rpartition('°')[0])
 		high=(high_F-32)*(5/9)
@@ -39,31 +40,28 @@ def temperature(month,year):
 		avg_F=int(avg.rpartition('°')[0])
 		avg=(avg_F-32)*(5/9)
 	else:
-		avg=avg[0:2]	
-	print("OOOOOOOOOKKKKKKKK")	
-	print(high,low,avg)
-	hi_lo_avg.append(high)
-	hi_lo_avg.append(low)
-	hi_lo_avg.append(avg)
-	return hi_lo_avg
+		avg=avg[0:2]		
+	print(year,month,high,low,avg)
+	high_temps.append(high)
+	low_temps.append(low)
+	avg_temps.append(avg)	
 
-def make_cols_for_df(temps):
-	high1.append(temps[0])
-	low1.append(temps[1])
-	avg1.append(temps[2])
-	
+
 def make_df(date,high,low,avg,months,years):
 	weather = pd.DataFrame({
-	'month/year':date,
+	'month-year':date,
 	'month':months,
 	'year':years,
-	'high':high,
-	'low':low,
-	'avg':avg})
+	'high':high_temps,
+	'low':low_temps,
+	'avg':avg_temps
+	})
 	return weather
+
 
 legend_avg1=[]
 legend_print_avg1=[]
+
 def plot_average(year,df):
 	plt.figure(1)
 	avg=pd.to_numeric(df['avg'])
@@ -106,38 +104,30 @@ def plot_low(year,df):
 	plt.ylabel("Temperature(celcius)")
 	plt.title("HISTORY OF AMRITSAR LOW TEMPERATURE")
 	print("DONE")	
-	
-high1=[]
-low1=[]
-avg1=[]		
-m,y=1,2010
-for i in range(5):
-	m=0
-	for i in range(12):
-		m=m+1
-		temps=temperature(m,y)
-		make_cols_for_df(temps)
-	y=y+1
 
-#print(high)
-#print(low)
-#print(avg)
+city = sys.argv[1]
+start_year = int(sys.argv[2])
+end_year = int(sys.argv[3])
 
-high1 = list(map(int, high1))
-low1 = list(map(int, low1))		
-avg1 = list(map(int, avg1))
+while end_year>=start_year:
+	m=1
+	while m<=12:
+		past_year_stats(city,m,start_year)
+		m+=1
+	start_year+=1
 
-#print(high)
-#print(low)
-#print(avg)
+high_temps = list(map(int, high_temps))
+low_temps = list(map(int, low_temps))		
+avg_temps = list(map(int, avg_temps))
 
-df=make_df(date,high1,low1,avg1,months,years)
-groupby_df=df.groupby(df['year'])
-print(df)
+weather = make_df(date,high_temps,low_temps,avg_temps,months,years)
+print(weather)
+groupby_df=weather.groupby(weather['year'])
 for x in list(groupby_df):
+	plot_average_test(x[0],x[1])
 	plot_average(x[0],x[1])
 	plot_high(x[0],x[1])
-	plot_low(x[0],x[1])
+	plot_low(x[0],x[1])	
 
 plt.figure(1)	
 plt.legend(legend_avg1,legend_print_avg1)
@@ -146,4 +136,3 @@ plt.legend(legend_high1,legend_print_high1)
 plt.figure(3)
 plt.legend(legend_low1,legend_print_high1)
 plt.show()	
-
